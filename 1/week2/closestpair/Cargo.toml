@@ -1,0 +1,6 @@
+[package]
+name = "closestpair"
+version = "0.1.0"
+authors = ["Jeff Gran <jeff.gran@gmail.com>"]
+
+[dependencies]
