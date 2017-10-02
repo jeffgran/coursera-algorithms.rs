@@ -2,7 +2,7 @@
 
 [Wikipedia Page](https://en.wikipedia.org/wiki/Karatsuba_algorithm)
 
-This is a multiplication algorithm that runs in O(n log(n)), rather than the naive implementation which runs in O(n²) where n = the number of digits in the input numbers.
+This is a multiplication algorithm that runs in O(n^1.585), rather than the naive implementation which runs in O(n²) where n = the number of digits in the input numbers.
 
 The intention was to be able to efficiently compute products of numbers of any length (i.e. not limited by Integer::MAX).
 
