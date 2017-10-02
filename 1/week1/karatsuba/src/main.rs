@@ -25,7 +25,7 @@ impl<'a> Into<i32> for &'a Digits {
             for _ in 0..place {
                 v *= 10;
             }
-            result += v.into();
+            result += v as i32;
         }
         result
     }
@@ -40,7 +40,6 @@ impl<'a> Mul<&'a Digits> for &'a Digits {
             let snum: i32 = self.into();
             let onum: i32 = other.into();
             let product = snum * onum;
-            //println!("simple case: {:?} * {:?} = {:?}", self, other, Digits::from(product));
             return Digits::from(product);
         }
         let pad = len / 2;
@@ -49,24 +48,16 @@ impl<'a> Mul<&'a Digits> for &'a Digits {
                 (Digits::from_slice(a), Digits::from_slice(b))
             }
         };
-        println!("(a,b) = ({:?}, {:?})", a, b);
+
         let (c,d) = match other.0.split_at( other.len() - pad ) {
             (c,d) => {
                 (Digits::from_slice(c), Digits::from_slice(d))
             }
         };
-        println!("(c,d) = ({:?}, {:?})", c, d);
         let ac = &a * &c;
-        println!("{:?} * {:?} = {:?}", a, c, ac);
         let bd = &b * &d;
-        println!("{:?} * {:?} = {:?}", b, d, bd);
-
-        // println!("{:?} + {:?} = {:?}", a, b, (&a + &b));
-        // println!("{:?} + {:?} = {:?}", c, d, (&c + &d));
-        // println!("{:?} * {:?} = {:?}", (&a + &b), (&c + &d), &(&a + &b) * &(&c + &d));
 
         let z = &(&(&(&a + &b) * &(&c + &d)) - &ac) - &bd;
-        // println!("{:?} - {:?} - {:?} = {:?}", &(&(&a + &b) * &(&c + &d)), &ac, &bd, z);
 
         &(&(ac.pad((pad) * 2)) + &(z.pad(pad))) + &bd
     }
@@ -193,15 +184,31 @@ impl Digits {
         v.reverse();
         Digits(v)
     }
+
+    fn parse(s: &str) -> Digits {
+        let mut v = Vec::new();
+        for c in s.chars() {
+            v.push(c.to_digit(10).unwrap() as i8);
+        }
+        Digits(v)
+    }
 }
 
 
 
 fn main() {
-    let a = Digits(vec![3,1,4,1,5,9,2,6,5,3,5,8,9,7,9,3,2,3,8,4,6,2,6,4,3,3,8,3,2,7,9,5,0,2,8,8,4,1,9,7,1,6,9,3,9,9,3,7,5,1,0,5,8,2,0,9,7,4,9,4,4,5,9,2]);
-    let b = Digits(vec![2,7,1,8,2,8,1,8,2,8,4,5,9,0,4,5,2,3,5,3,6,0,2,8,7,4,7,1,3,5,2,6,6,2,4,9,7,7,5,7,2,4,7,0,9,3,6,9,9,9,5,9,5,7,4,9,6,6,9,6,7,6,2,7]);
-    let ab = &a * &b;
-    println!("{:?} * {:?} = {:?}", a,b,ab);
+    let args: Vec<String> = std::env::args().collect();
+    if args.len() > 2 {
+        let a = Digits::parse(&args[1]);
+        let b = Digits::parse(&args[2]);
+        // let a = Digits(vec![3,1,4,1,5,9,2,6,5,3,5,8,9,7,9,3,2,3,8,4,6,2,6,4,3,3,8,3,2,7,9,5,0,2,8,8,4,1,9,7,1,6,9,3,9,9,3,7,5,1,0,5,8,2,0,9,7,4,9,4,4,5,9,2]);
+        // let b = Digits(vec![2,7,1,8,2,8,1,8,2,8,4,5,9,0,4,5,2,3,5,3,6,0,2,8,7,4,7,1,3,5,2,6,6,2,4,9,7,7,5,7,2,4,7,0,9,3,6,9,9,9,5,9,5,7,4,9,6,6,9,6,7,6,2,7]);
+        let ab = &a * &b;
+        println!("{:?} * {:?} = {:?}", a,b,ab);
+    } else {
+        println!("Usage:");
+        println!("karatsuba <number1> <number2>");
+    }
 }
 
 
