@@ -22,7 +22,13 @@ impl AsRef<Point> for Point {
 
 
 fn main() {
-    let points: Vec<Point> = generate(10000);
+    let args: Vec<String> = std::env::args().collect();
+    let n: usize = if args.len() > 1 {
+        args[1].parse().unwrap()
+    } else {
+        1000
+    };
+    let points: Vec<Point> = generate(n);
     let point_refs: Vec<&Point> = points.iter().map(AsRef::as_ref).collect();
 
     let (a, b, z) = closest_pair_n2(&point_refs);
