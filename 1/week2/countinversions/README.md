@@ -6,6 +6,8 @@ Amazingly, a fast (`O(n log(n))`) way to calculate the number of inversions is t
 
 So I just copied my [Merge Sort](../../week1/mergesort) agorithm and added the bookkeeping code.
 
+This program expects a file called `ints.txt` to exist in this directory with a list of numbers, one per line.
+
 ### example output
 
 ```

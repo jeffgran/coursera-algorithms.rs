@@ -6,3 +6,4 @@ Algorithms I implemented for this course:
 - [Merge Sort](week1/mergesort/)
 - [Count Inversions](week2/countinversions/)
 - [Closest Pair of Points on a Plane](week2/closestpair/)
+- [Quicksort](week3/quicksort/)

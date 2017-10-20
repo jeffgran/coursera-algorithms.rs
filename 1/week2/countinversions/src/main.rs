@@ -1,28 +1,34 @@
 extern crate rand;
+use std::io::BufRead;
 
 fn main() {
-    let input = generate(256);
-    //let input = vec![7,6,5,4,3,2,1];
+    let mut input: Vec<i32> = Vec::new();
+    let f = std::fs::File::open("ints.txt").unwrap();
+    let reader = std::io::BufReader::new(&f);
+    for line in reader.lines() {
+        let l = line.unwrap();
+        input.push(l.parse().unwrap());
+    }
     let result = count_inv(&input[..]);
     println!("Input: {:?}", input);
     println!("Number of inversions: {}", result);
 }
 
 
-fn generate(len: usize) -> Vec<u8> {
+fn generate(len: usize) -> Vec<i32> {
     let mut v = Vec::with_capacity(len);
     for _ in 0..len {
-        v.push(rand::random::<u8>());
+        v.push(rand::random::<i32>());
     }
     v
 }
 
-fn count_inv(input: &[u8]) -> u32 {
+fn count_inv(input: &[i32]) -> u32 {
     let (_, num) = sort_and_count_inv(input);
     num
 }
 
-fn sort_and_count_inv(input: &[u8]) -> (Vec<u8>, u32) {
+fn sort_and_count_inv(input: &[i32]) -> (Vec<i32>, u32) {
     match input.len() {
         0...1 => {
             let mut result = Vec::new();
@@ -40,7 +46,7 @@ fn sort_and_count_inv(input: &[u8]) -> (Vec<u8>, u32) {
 }
 
 
-fn merge(a: &Vec<u8>, b: &Vec<u8>) -> (Vec<u8>, u32) {
+fn merge(a: &Vec<i32>, b: &Vec<i32>) -> (Vec<i32>, u32) {
     let alen = a.len();
     let blen = b.len();
     let len = alen + blen;
